@@ -2,7 +2,7 @@ name: Deploy
 on:
   push:
     branches:
-    - main
+    - master
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,7 +23,7 @@ jobs:
     - name: Run Tests
       run: python manage.py test
     - name: executing remote ssh commands using password 
-      uses: appleboy/ssh-action@main
+      uses: appleboy/ssh-action@master
       with:
         host: --IP адрес сервера--
         username: ${{ secrets.USERNAME }}
