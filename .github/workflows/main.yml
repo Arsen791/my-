@@ -21,9 +21,4 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: 22
         script: |
-          cd папка, в которой находится проект
-          source ./venv/bin/activate
-          git pull
-          python manage.py migrate
-          python manage.py collectstatic --noinput 
-          supervisorctl restart all
+
