@@ -25,13 +25,13 @@ jobs:
     - name: executing remote ssh commands using password 
       uses: appleboy/ssh-action@master
       with:
-        host: --IP адрес сервера--
+        host: 157.230.94.74
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: 22
         script: |
-          cd папка, в которой находится проект
-          source ./venv/bin/activate
+          cd/root/myproject
+          source /root/venv/bin/activate
           git pull
           python manage.py migrate
           python manage.py collectstatic --noinput 
