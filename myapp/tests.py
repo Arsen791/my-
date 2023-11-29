@@ -7,7 +7,7 @@ class zatTestCase(TestCase):
 
     def test_model_creation(self):
         obj = zat.objects.get(name="Dala")
-        self.assertEqual(obj.price, 100)
+        self.assertEqual(obj.price, 150)
 
     def test_model_update(self):
         obj = zat.objects.get(name="Dala")
