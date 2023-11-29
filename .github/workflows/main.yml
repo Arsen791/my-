@@ -2,7 +2,7 @@ name: Deploy
 on:
   push:
     branches:
-    - main
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,28 +11,23 @@ jobs:
       matrix:
         python-version: [3.9]
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }} 
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }} 
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Run Tests
-      run: python manage.py test
-    - name: executing remote ssh commands using password 
-      uses: appleboy/ssh-action@master
-      with:
-        host: '157.230.94.74'
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        port: 22
-        script: |
-          cd/root/myproject
-          source /root/venv/bin/activate
-          git pull
-          python manage.py migrate
-          python manage.py collectstatic --noinput 
-          supervisorctl restart all
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }} 
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }} 
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run Tests and Deployment
+        run: |
+          python manage.py test
+          sshpass -p ${{ secrets.PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@157.230.94.74 -p 22 "
+            cd /root/myproject &&
+            source ./venv/bin/activate &&
+            git pull &&
+            python manage.py migrate &&
+            python manage.py collectstatic --noinput &&
+            supervisorctl restart all
+          "
